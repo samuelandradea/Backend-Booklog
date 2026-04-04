@@ -1,6 +1,17 @@
+from typing import Optional
 from fastapi import APIRouter
 from repositories.user_repository import create_user, get_user, update_user, delete_user
 from pydantic import BaseModel
+
+class UserUpdateModel(BaseModel):
+    name: Optional[str] = None
+    email: Optional[str] = None
+    gender: Optional[str] = None
+    birthDate: Optional[str] = None
+    genres: Optional[list[str]] = None
+    friendIds: Optional[list[str]] = None
+    listIds: Optional[list[str]] = None
+    reviewIds: Optional[list[str]] = None
 
 class UserModel(BaseModel):
     name: str
@@ -25,8 +36,8 @@ def get_user_route(uid: str):
     return user
 
 @router.put("/users/{uid}")#UPDATE
-def update_user_route(uid: str, body: UserModel):
-    update_user(uid, body.model_dump())
+def update_user_route(uid: str, body: UserUpdateModel):
+    update_user(uid, body.model_dump(exclude_none=True))
     return {"message": "Usuário atualizado com sucesso"}
 
 @router.delete("/users/{uid}")#DELETE
