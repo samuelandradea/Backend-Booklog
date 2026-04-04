@@ -1,7 +1,6 @@
 from fastapi import APIRouter
 from repositories.user_repository import create_user, get_user, update_user, delete_user
 from pydantic import BaseModel
-from typing import Optional
 
 class UserModel(BaseModel):
     name: str
