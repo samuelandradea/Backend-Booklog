@@ -1,10 +1,9 @@
 from fastapi import FastAPI
 from firebase import config
 from routes.user_routes import router as user_router
-from fastapi.middleware.cors import CORSMiddleware
 from routes.search_routes import router as search_router
-
-
+from routes.review_routes import router as review_router
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
@@ -18,7 +17,7 @@ app.add_middleware(
 
 app.include_router(user_router)
 app.include_router(search_router)
-
+app.include_router(review_router)
 
 @app.get("/")
 def root():
