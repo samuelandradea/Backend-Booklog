@@ -31,9 +31,7 @@ def search_in_firebase(termo: str):
         book_data['id'] = doc.id
         resultados["livros"].append(book_data)
 
-    # ---------------------------------------------------------
     # 3. BUSCANDO AUTORES
-    # ---------------------------------------------------------
     query_authors = books_ref.where('authors', '>=', termo_formatado).where('authors', '<=', limite).stream()
     
 
