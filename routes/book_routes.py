@@ -1,5 +1,5 @@
-from fastapi import APIRouter
-from repositories.book_repository import get_books_for_home
+from fastapi import APIRouter, HTTPException
+from repositories.book_repository import get_books_for_home, get_book_by_isbn
 
 router = APIRouter()
 
@@ -9,3 +9,10 @@ def get_books():
     
     # Devolve a lista de livros para o aplicativo
     return dados_livros
+
+@router.get("/books/{isbn}")
+def get_book(isbn: str):
+    livro = get_book_by_isbn(isbn)
+    if not livro:
+        raise HTTPException(status_code=404, detail="Livro não encontrado")
+    return livro
