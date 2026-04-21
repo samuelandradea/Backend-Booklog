@@ -9,9 +9,9 @@ def create_review(uid: str, data: dict):
     _, doc_ref = db.collection("reviews").add(data)
     review_id = doc_ref.id
 
-    db.collection("users").document(uid).update({
+    db.collection("users").document(uid).set({
         "reviewIds": firestore.ArrayUnion([review_id])
-    })
+    }, merge=True)
 
     return review_id
 
