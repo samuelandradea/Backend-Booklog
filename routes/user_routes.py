@@ -12,6 +12,9 @@ class UserUpdateModel(BaseModel):
     friendIds: Optional[list[str]] = None
     listIds: Optional[list[str]] = None
     reviewIds: Optional[list[str]] = None
+    semanaSalva: Optional[str] = None
+    diasLidosSemana: Optional[list[int]] = None
+    totalDiasLidos: Optional[int] = None
 
 class UserModel(BaseModel):
     name: str
@@ -22,6 +25,9 @@ class UserModel(BaseModel):
     friendIds: list[str] = []
     listIds: list[str] = []
     reviewIds: list[str] = []
+    semanaSalva: str
+    diasLidosSemana: list[int] = []
+    totalDiasLidos: int = 0
 
 router = APIRouter()
 
