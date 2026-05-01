@@ -3,6 +3,7 @@ import random
 import os
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from firebase_admin import auth as firebase_auth
 
 # Armazena os códigos temporariamente em memória {email: codigo}
 codigos_recuperacao = {}
@@ -51,3 +52,8 @@ def verificar_codigo(email: str, codigo: str) -> bool:
 def remover_codigo(email: str):
     """Remove o código após uso."""
     codigos_recuperacao.pop(email, None)
+    
+def redefinir_senha_firebase(email: str, nova_senha: str):
+    """Redefine a senha do usuário no Firebase Auth pelo email."""
+    usuario = firebase_auth.get_user_by_email(email)
+    firebase_auth.update_user(usuario.uid, password=nova_senha)
