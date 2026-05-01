@@ -39,7 +39,9 @@ def enviar_email_recuperacao(email: str) -> str:
     """
     msg.attach(MIMEText(corpo, "plain"))
 
-    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
+    with smtplib.SMTP_SSL("smtp.gmail.com", 587) as smtp:
+        smtp.ehlo()
+        smtp.starttls()
         smtp.login(gmail_user, gmail_password)
         smtp.sendmail(gmail_user, email, msg.as_string())
 
