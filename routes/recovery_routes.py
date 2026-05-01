@@ -37,14 +37,6 @@ def reset_password(body: NewPasswordModel):
     """Verifica o código e redefine a senha via Firebase Admin."""
     if not verificar_codigo(body.email, body.codigo):
         raise HTTPException(status_code=400, detail="Código inválido ou expirado")
-    remover_codigo(body.email)
-    return {"message": "Senha redefinida com sucesso"}
-
-@router.post("/recovery/reset-password")
-def reset_password(body: NewPasswordModel):
-    """Verifica o código e redefine a senha via Firebase Admin."""
-    if not verificar_codigo(body.email, body.codigo):
-        raise HTTPException(status_code=400, detail="Código inválido ou expirado")
     try:
         redefinir_senha_firebase(body.email, body.nova_senha)
         remover_codigo(body.email)
