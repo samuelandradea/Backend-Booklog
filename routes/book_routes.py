@@ -16,3 +16,11 @@ def get_book(isbn: str):
     if not livro:
         raise HTTPException(status_code=404, detail="Livro não encontrado")
     return livro
+
+@router.get("/authors/{nome_autor}/books")
+def get_books_by_author(nome_autor: str):
+    from repositories.book_repository import get_books_by_author
+    livros = get_books_by_author(nome_autor)
+    if not livros:
+        raise HTTPException(status_code=404, detail="Autor não encontrado")
+    return livros
