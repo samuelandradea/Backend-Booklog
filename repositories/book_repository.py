@@ -26,3 +26,13 @@ def get_book_by_isbn(isbn: str):
         return book_data
     
     return None
+
+def get_books_by_author(nome_autor: str):
+    books_ref = db.collection('books')
+    query = books_ref.where('authors', '==', nome_autor).stream()
+    livros = []
+    for doc in query:
+        book_data = doc.to_dict()
+        book_data['id'] = doc.id
+        livros.append(book_data)
+    return livros
