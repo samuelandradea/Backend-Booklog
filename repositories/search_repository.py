@@ -25,21 +25,21 @@ def search_in_firebase(termo: str):
     # 2. BUSCANDO LIVROS
     books_ref = db.collection('books')
     query_books = books_ref.where('title', '>=', termo_formatado).where('title', '<=', limite).stream()
-    
+
     for doc in query_books:
         book_data = doc.to_dict()
         book_data['id'] = doc.id
         resultados["livros"].append(book_data)
 
     # 3. BUSCANDO AUTORES
-    query_authors = books_ref.where('authors', '>=', termo_formatado).where('authors', '<=', limite).stream()
-    
+    query_authors = books_ref.where('author', '>=', termo_formatado).where('author', '<=', limite).stream()
 
-    autores_vistos = set() 
-    
+
+    autores_vistos = set()
+
     for doc in query_authors:
         author_data = doc.to_dict()
-        nome_autor = author_data.get('authors')
+        nome_autor = author_data.get('author')
         
         if nome_autor and nome_autor not in autores_vistos:
             author_data['id'] = doc.id
