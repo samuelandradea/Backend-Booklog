@@ -87,3 +87,18 @@ def delete_location(uid: str, location_id: str):
     # Se for o próprio criador, deleta o documento
     db.collection("locations").document(location_id).delete()
     return "SUCCESS"
+
+# ==========================================
+# SUGESTÕES DE LOCAIS
+# ==========================================
+
+def create_suggestion(data: dict):
+    """
+    Salva uma sugestão de local literário no banco.
+    Como decidido pela equipe, essas sugestões não terão vínculo de usuário 
+    e não serão exibidas automaticamente no mapa até serem aprovadas.
+    """
+    # Adiciona os dados na coleção 'suggestions' (cria a coleção se não existir)
+    _, doc_ref = db.collection("suggestions").add(data)
+    
+    return doc_ref.id
