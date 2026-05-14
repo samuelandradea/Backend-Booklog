@@ -1,17 +1,23 @@
 import csv
 import sys
+import time
 from firebase.config import db
 
 
-def seed(csv_path: str, batch_size: int = 500):
+def seed(csv_path: str, batch_size: int = 500, skip: int = 0, delay: float = 1.5):
     collection = db.collection("books")
 
     with open(csv_path, encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
         batch = db.batch()
         count = 0
+        skipped = 0
 
         for row in reader:
+            if skipped < skip:
+                skipped += 1
+                continue
+
             doc_ref = collection.document()
             batch.set(doc_ref, {
                 "author": row.get("author", ""),
@@ -33,14 +39,16 @@ def seed(csv_path: str, batch_size: int = 500):
             if count % batch_size == 0:
                 batch.commit()
                 batch = db.batch()
-                print(f"{count} documentos inseridos...")
+                print(f"{count + skip} documentos inseridos...")
+                time.sleep(delay)
 
         if count % batch_size != 0:
             batch.commit()
 
-    print(f"Seed finalizado. {count} livros inseridos na coleção 'books'.")
+    print(f"Seed finalizado. {count} livros inseridos (skip={skip}).")
 
 
 if __name__ == "__main__":
     path = sys.argv[1] if len(sys.argv) > 1 else "../Booklog/data/data.csv"
-    seed(path)
+    skip = int(sys.argv[2]) if len(sys.argv) > 2 else 0
+    seed(path, skip=skip)
