@@ -19,6 +19,16 @@ class LocationModel(BaseModel):
     tipo: str # Ex: 'livraria', 'biblioteca', 'sebo'
     fotoUrl: Optional[str] = None # Campo opcional para salvar a imagem do local
 
+class SuggestionModel(BaseModel):
+    """
+    Modelo de validação para Sugestão de Novo Local.
+    Usado na tela de Sugerir Local, não necessita de latitude/longitude neste momento.
+    """
+    nome: str
+    categoria: str
+    endereco: str
+    motivo: Optional[str] = None # Campo opcional
+
 class LocationUpdateModel(BaseModel):
     """
     Modelo para atualização. Todos os campos são opcionais, 
@@ -37,6 +47,19 @@ router = APIRouter()
 # ==========================================
 # ENDPOINTS (ROTAS HTTP)
 # ==========================================
+
+@router.post("/suggestions", status_code=201)
+def create_suggestion_route(body: SuggestionModel):
+    """
+    Rota para ENVIAR UMA SUGESTÃO de novo local.
+    Pode ser acessada por qualquer pessoa usando o app (não exige login/uid).
+    """
+    # Importação feita dentro da função para evitar dependência circular se houver
+    from repositories.location_repository import create_suggestion
+    
+    result = create_suggestion(body.model_dump())
+    return {"message": "Sugestão recebida com sucesso! Nossa equipe vai analisar.", "suggestionId": result}
+
 
 @router.post("/users/{uid}/locations", status_code=201)
 def create_location_route(uid: str, body: LocationModel):

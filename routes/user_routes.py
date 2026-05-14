@@ -6,6 +6,7 @@ from pydantic import BaseModel
 class UserUpdateModel(BaseModel):
     name: Optional[str] = None
     email: Optional[str] = None
+    bio: Optional[str] = None
     gender: Optional[str] = None
     birthDate: Optional[str] = None
     genres: Optional[list[str]] = None
@@ -20,6 +21,7 @@ class UserUpdateModel(BaseModel):
 class UserModel(BaseModel):
     name: str
     email: str
+    bio: str = ""
     gender: str
     birthDate: str
     genres: list[str] = []
