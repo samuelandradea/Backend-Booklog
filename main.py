@@ -28,12 +28,7 @@ app.include_router(search_router)
 app.include_router(review_router)
 app.include_router(book_routes)
 app.include_router(recovery_router)
-app.include_router(book_routes)
 app.include_router(list_router)
 app.include_router(location_router)
-app.include_router(ml_router)
 app.include_router(friendship_router)
-
-@app.get("/")
-def root():
-    return {"message": "Booklog API"}
+app.include_router(ml_router)
