@@ -1,3 +1,6 @@
+import time
+from fastapi import File, UploadFile
+from supabase_config import supabase
 from typing import Optional
 from fastapi import APIRouter
 from repositories.user_repository import create_user, get_user, update_user, delete_user
@@ -17,6 +20,7 @@ class UserUpdateModel(BaseModel):
     diasLidosSemana: Optional[list[int]] = None
     totalDiasLidos: Optional[int] = None
     metaAnual: Optional[int] = None
+    fotoURL: Optional[str] = None
 
 class UserModel(BaseModel):
     name: str
@@ -32,6 +36,7 @@ class UserModel(BaseModel):
     diasLidosSemana: list[int] = []
     totalDiasLidos: int = 0
     metaAnual: int = 0
+    fotoURL: str = ""
 
 router = APIRouter()
 
@@ -54,3 +59,20 @@ def update_user_route(uid: str, body: UserUpdateModel):
 def delete_user_route(uid: str):
     delete_user(uid)
     return {"message": "Usuário deletado com sucesso"}
+
+@router.post("/users/{uid}/foto")
+async def upload_foto_route(uid: str, file: UploadFile = File(...)):
+    contents = await file.read()
+    path = f"avatars/{uid}.jpg"
+    
+    supabase.storage.from_("avatars").upload(
+        path, contents,
+        {"content-type": "image/jpeg", "upsert": "true"}
+    )
+    
+    url_base = supabase.storage.from_("avatars").get_public_url(path)
+    # ?t= evita cache no app
+    foto_url = f"{url_base}?t={int(time.time())}"
+    
+    update_user(uid, {"fotoURL": foto_url})
+    return {"fotoURL": foto_url}
