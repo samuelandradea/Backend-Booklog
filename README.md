@@ -123,7 +123,7 @@ https://pisi3-production.up.railway.app/docs
 ## ⚙️ Como rodar localmente
 
 ### Pré-requisitos
-- Python 3.10+
+- Python 3.12
 - Credenciais do Firebase (arquivo `serviceAccountKey.json`)
 
 ### Instalação
