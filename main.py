@@ -10,7 +10,6 @@ from routes.recovery_routes import router as recovery_router
 from routes.list_routes import router as list_router
 from routes.location_routes import router as location_router
 from routes.friendship_routes import router as friendship_router
-from routes.ml_routes import router as ml_router
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -31,4 +30,3 @@ app.include_router(recovery_router)
 app.include_router(list_router)
 app.include_router(location_router)
 app.include_router(friendship_router)
-app.include_router(ml_router)
