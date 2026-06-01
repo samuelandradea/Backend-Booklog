@@ -9,6 +9,8 @@ Backend do aplicativo **Booklog**, desenvolvido com **FastAPI** (Python) e **Fir
 - [FastAPI](https://fastapi.tiangolo.com/) — framework web para Python
 - [Firebase Admin SDK](https://firebase.google.com/docs/admin/setup) — integração com Firestore
 - [Supabase](https://supabase.com/) — armazenamento de fotos de perfil
+- [SendGrid](https://sendgrid.com/) — envio de e-mails de recuperação de senha
+- [scikit-learn / pandas / numpy](https://scikit-learn.org/) — sistema de recomendação de livros
 - [Pydantic](https://docs.pydantic.dev/) — validação de dados
 - [Railway](https://railway.app/) — plataforma de deploy
 
@@ -17,10 +19,11 @@ Backend do aplicativo **Booklog**, desenvolvido com **FastAPI** (Python) e **Fir
 ## 📁 Estrutura do Projeto
 
 ```
-PISI3/
+Backend-Booklog/
 ├── main.py                      # Ponto de entrada da aplicação
 ├── firebase/
 │   └── config.py                # Configuração do Firebase Admin SDK
+├── supabase_config.py           # Configuração do Supabase
 ├── routes/
 │   ├── book_routes.py           # Rotas de livros
 │   ├── user_routes.py           # Rotas de usuários
@@ -138,7 +141,7 @@ https://pisi3-production.up.railway.app/docs
 
 ```bash
 git clone https://github.com/samuelandradea/PISI3.git
-cd PISI3/PISI3
+cd PISI3
 ```
 
 ### 2. Crie o ambiente virtual e instale as dependências
@@ -151,24 +154,24 @@ source .venv/bin/activate   # Linux/Mac
 pip install -r requirements.txt
 ```
 
-### 3. Configure as variáveis de ambiente
+### 3. Configure as credenciais do Firebase
 
-Crie um arquivo `.env` na raiz do projeto com o seguinte conteúdo:
+O backend usa o **Firebase Admin SDK**. Localmente, as credenciais ficam em um arquivo `serviceAccountKey.json`. Em produção (Railway), elas são lidas da variável de ambiente `FIREBASE_CREDENTIALS`.
+
+**Para rodar localmente:**
+
+1. Acesse o [Firebase Console](https://console.firebase.google.com/)
+2. Selecione seu projeto → **Configurações do projeto** → **Contas de serviço**
+3. Clique em **Gerar nova chave privada** — isso baixa um arquivo `.json`
+4. Renomeie o arquivo para `serviceAccountKey.json` e coloque-o na raiz do projeto
+
+> ⚠️ **Nunca commite o `serviceAccountKey.json` no repositório.** Ele já está no `.gitignore`.
+
+### 4. Configure as variáveis de ambiente
+
+Crie um arquivo `.env` na raiz do projeto:
 
 ```env
-# Firebase — credenciais da conta de serviço
-# Acesse: Firebase Console → Configurações do projeto → Contas de serviço → Gerar nova chave privada
-FIREBASE_TYPE=service_account
-FIREBASE_PROJECT_ID=seu-project-id
-FIREBASE_PRIVATE_KEY_ID=seu-private-key-id
-FIREBASE_PRIVATE_KEY="-----BEGIN RSA PRIVATE KEY-----\n...\n-----END RSA PRIVATE KEY-----\n"
-FIREBASE_CLIENT_EMAIL=firebase-adminsdk-xxxxx@seu-projeto.iam.gserviceaccount.com
-FIREBASE_CLIENT_ID=seu-client-id
-FIREBASE_AUTH_URI=https://accounts.google.com/o/oauth2/auth
-FIREBASE_TOKEN_URI=https://oauth2.googleapis.com/token
-FIREBASE_AUTH_PROVIDER_CERT_URL=https://www.googleapis.com/oauth2/v1/certs
-FIREBASE_CLIENT_CERT_URL=https://www.googleapis.com/robot/v1/metadata/x509/...
-
 # SendGrid — para envio de e-mails de recuperação de senha
 # Acesse: sendgrid.com → Settings → API Keys → Create API Key
 SENDGRID_API_KEY=SG.xxxxxxxxxxxxxxxxxxxx
@@ -180,25 +183,16 @@ SUPABASE_URL=https://xxxxxxxxxxx.supabase.co
 SUPABASE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ```
 
-> ⚠️ **Nunca commite o `.env` no repositório.** Certifique-se de que ele está no `.gitignore`.
+> ⚠️ **Nunca commite o `.env` no repositório.** Ele já está no `.gitignore`.
 
-### 4. Inicie o servidor
+### 5. Inicie o servidor
 
 ```bash
 uvicorn main:app --reload
 ```
 
-O servidor estará disponível em `http://localhost:8000`.
+O servidor estará disponível em `http://localhost:8000`.  
 A documentação interativa estará em `http://localhost:8000/docs`.
-
----
-
-## 🔥 Configuração do Firebase
-
-1. Acesse o [Firebase Console](https://console.firebase.google.com/)
-2. Selecione seu projeto → **Configurações do projeto** → **Contas de serviço**
-3. Clique em **Gerar nova chave privada** — isso baixa um arquivo `.json`
-4. Copie os valores do `.json` para as variáveis de ambiente descritas acima
 
 ---
 
@@ -206,8 +200,10 @@ A documentação interativa estará em `http://localhost:8000/docs`.
 
 Projeto desenvolvido para a disciplina de **DSI / PISI3 / ESSI1** — UFRPE.
 
-Clara Helena https://github.com/clarahelena  
-Gabryel Gomes https://github.com/GabryelSouzazz  
-Maria Eduarda https://github.com/mmaria-alves  
-Matheus Cintra https://github.com/CintraMatheus  
-Samuel Andrade https://github.com/samuelandradea  
+| Membro | GitHub |
+|--------|--------|
+| Clara Helena | [@clarahelena](https://github.com/clarahelena) |
+| Gabryel Gomes | [@GabryelSouzazz](https://github.com/GabryelSouzazz) |
+| Maria Eduarda | [@mmaria-alves](https://github.com/mmaria-alves) |
+| Matheus Cintra | [@CintraMatheus](https://github.com/CintraMatheus) |
+| Samuel Andrade | [@samuelandradea](https://github.com/samuelandradea) |
