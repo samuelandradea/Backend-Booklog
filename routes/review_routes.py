@@ -25,16 +25,16 @@ def create_review_route(uid: str, body: ReviewModel):
 def get_reviews_route(uid: str):
     return get_reviews(uid)
 
-@router.get("/reviews/{review_id}")
-def get_review_route(review_id: str):
-    review = get_review(review_id)
+@router.get("/users/{uid}/reviews/{review_id}")
+def get_review_route(uid: str, review_id: str):
+    review = get_review(uid, review_id)
     if not review:
         raise HTTPException(status_code=404, detail="Review não encontrada")
     return review
 
-@router.put("/reviews/{review_id}")
-def update_review_route(review_id: str, body: ReviewUpdateModel):
-    updated = update_review(review_id, body.model_dump(exclude_none=True))
+@router.put("/users/{uid}/reviews/{review_id}")
+def update_review_route(uid: str, review_id: str, body: ReviewUpdateModel):
+    updated = update_review(uid, review_id, body.model_dump(exclude_none=True))
     if not updated:
         raise HTTPException(status_code=404, detail="Review não encontrada")
     return {"message": "Review atualizada com sucesso"}
