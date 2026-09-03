@@ -46,17 +46,9 @@ Backend-Booklog/
 
 ---
 
-## 🌐 Base URL
+## 🌐 Deploy
 
-```
-https://pisi3-production.up.railway.app
-```
-
-A documentação interativa da API está disponível em:
-
-```
-https://pisi3-production.up.railway.app/docs
-```
+> ⚠️ O deploy no Railway (https://pisi3-production.up.railway.app) está atualmente fora do ar — a assinatura foi encerrada após o fim do projeto acadêmico. Para testar a API, rode localmente seguindo as instruções abaixo.
 
 ---
 
@@ -140,8 +132,8 @@ https://pisi3-production.up.railway.app/docs
 ### 1. Clone o repositório
 
 ```bash
-git clone https://github.com/samuelandradea/PISI3.git
-cd PISI3
+git clone https://github.com/samuelandradea/Backend-Booklog.git
+cd Backend-Booklog
 ```
 
 ### 2. Crie o ambiente virtual e instale as dependências
